@@ -1,3 +1,4 @@
+import json
 from flask import Flask, request, redirect, render_template, url_for
 from pathlib import Path
 from oauth_client import OAuthClient
@@ -10,7 +11,17 @@ oauth = OAuthClient()
 def index():
     # Rendering if site is installed.
     if Path("photolog.cfg").is_file():
-        return "It Works!"
+        content = oauth.request()
+        j = json.loads(content)
+
+        result = ''
+        for p in j['photos']['photo']:
+            result += '<img src="https://farm{farm}.staticflickr.com/{server}/' \
+                      '{id}_{secret}_h.jpg" width="100%"><br><br>'.format(farm=p['farm'],
+                                                                          server=p['server'],
+                                                                          id=p['id'],
+                                                                          secret=p['secret'])
+        return result
     else:
         # Redirect to getting access token page.
         return redirect(url_for('install'))

@@ -11,6 +11,19 @@ class OAuthClient:
         self.oauth_token = None
         self.oauth_token_secret = None
 
+        self.read_config()
+
+    def read_config(self):
+        try:
+            config = configparser.ConfigParser()
+            config.read('photolog.cfg')
+            self.oauth_token = config['Flickr_token']['oauth_token']
+            self.oauth_token_secret = config['Flickr_token']['oauth_token_secret']
+            self.init_consumer(config['Flickr_token']['oauth_consumer_token'], config['Flickr_token']['oauth_consumer_token_secret'])
+        except:
+            pass
+
+
     def request_token(self):
         request_token_url = 'https://www.flickr.com/services/oauth/request_token?oauth_callback=' + self.callback_url
         client = oauth.Client(self.consumer)
@@ -25,10 +38,13 @@ class OAuthClient:
         token = oauth.Token(oauth_token, self.oauth_token_secret)
         token.set_verifier(verifier)
         client = oauth.Client(self.consumer, token)
-        resp, content = client.request('https://www.flickr.com/services/oauth/access_token', "POST")
+        resp, content = client.request('https://www.flickr.com/services/oauth/access_token')
         access_token = dict(parse_qsl(content.decode()))
 
-        write_config(access_token)
+        self.oauth_token = access_token['oauth_token']
+        self.oauth_token_secret = access_token['oauth_token_secret']
+
+        write_config(self.consumer, access_token)
         return access_token
 
     def init_consumer(self, key, secret):
@@ -37,10 +53,18 @@ class OAuthClient:
     def get_authorize_url(self, token):
         return 'https://www.flickr.com/services/oauth/authorize?oauth_token=' + token
 
+    def request(self):
+        token = oauth.Token(self.oauth_token, self.oauth_token_secret)
+        client = oauth.Client(self.consumer, token)
+        resp, content = client.request('https://api.flickr.com/services/rest?method=flickr.people.getPhotos&user_id=93464828@N04&format=json&nojsoncallback=1&extras=original_format,description')
+        return content.decode()
 
-def write_config(access_token):
+
+def write_config(consumer, access_token):
     config = configparser.ConfigParser()
-    config['Flickr_token'] = {'oauth_token': access_token['oauth_token'],
+    config['Flickr_token'] = {'oauth_consumer_token': consumer.key,
+                              'oauth_consumer_token_secret': consumer.secret,
+                              'oauth_token': access_token['oauth_token'],
                               'oauth_token_secret': access_token['oauth_token_secret'],
                               'user_nsid': access_token['user_nsid'],
                               'username': access_token['username']}
