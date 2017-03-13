@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Photolog</title>
+    <style type="text/css">
+        html, body{
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+    </style>
+</head>
+<body>
+{% for p in navigation %}
+    <p>
+        <img src="https://farm{{p['farm']}}.staticflickr.com/{{p['server']}}/{{p['id']}}_{{p['secret']}}_h.jpg" width="100%">
+    </p>
+{% endfor %}
+</body>
+</html>
