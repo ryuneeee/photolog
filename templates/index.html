@@ -12,7 +12,7 @@
 </head>
 <body>
 {% for p in photos %}
-        <img src="https://farm{{p['farm']}}.staticflickr.com/{{p['server']}}/{{p['id']}}_{{p['secret']}}_h.jpg" width="100%"><br>
+        <img src="https://farm{{p['farm']}}.staticflickr.com/{{p['server']}}/{{p['id']}}_{{p['originalsecret']}}_o.jpg" width="100%"><br>
 {% endfor %}
 </body>
 </html>
