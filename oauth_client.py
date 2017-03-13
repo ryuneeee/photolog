@@ -10,19 +10,21 @@ class OAuthClient:
         self.callback_url = None
         self.oauth_token = None
         self.oauth_token_secret = None
-
+        self.user_nsid = None
         self.read_config()
 
     def read_config(self):
         try:
             config = configparser.ConfigParser()
             config.read('photolog.cfg')
+            self.user_nsid = config['Flickr_token']['user_nsid']
             self.oauth_token = config['Flickr_token']['oauth_token']
             self.oauth_token_secret = config['Flickr_token']['oauth_token_secret']
-            self.init_consumer(config['Flickr_token']['oauth_consumer_token'], config['Flickr_token']['oauth_consumer_token_secret'])
+            self.init_consumer(config['Flickr_token']['oauth_consumer_token'],
+                               config['Flickr_token']['oauth_consumer_token_secret'])
+
         except:
             pass
-
 
     def request_token(self):
         request_token_url = 'https://www.flickr.com/services/oauth/request_token?oauth_callback=' + self.callback_url
@@ -56,7 +58,9 @@ class OAuthClient:
     def request(self):
         token = oauth.Token(self.oauth_token, self.oauth_token_secret)
         client = oauth.Client(self.consumer, token)
-        resp, content = client.request('https://api.flickr.com/services/rest?method=flickr.people.getPhotos&user_id=93464828@N04&format=json&nojsoncallback=1&extras=original_format,description')
+        resp, content = client.request('https://api.flickr.com/services/rest?method=flickr.people.getPhotos&'
+                                       'user_id={user_nsid}&format=json&nojsoncallback=1&extras=original_format,description'
+                                       .format(user_nsid=self.user_nsid))
         return content.decode()
 
 
