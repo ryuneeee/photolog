@@ -14,7 +14,7 @@ def index():
         content = oauth.request()
         j = json.loads(content)
 
-        return render_template('index.html', photo=j['photos']['photo'])
+        return render_template('index.html', photos=j['photos']['photo'])
     else:
         # Redirect to getting access token page.
         return redirect(url_for('install'))
