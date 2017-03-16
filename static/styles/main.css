@@ -1,0 +1,58 @@
+html, body{
+    margin: auto;
+    padding: 0;
+    width: 100%;
+}
+
+
+.container{
+    width: inherit;
+    position: relative;
+    overflow: hidden;
+}
+
+.photo{
+    width: inherit;
+}
+
+.photo img{
+    width: inherit;
+}
+
+.content {
+    clear:both;
+    padding: 100px 70px 400px 70px;
+}
+
+
+.blur-1x{
+    filter: blur(3px);
+    -webkit-filter: blur(3px);
+    -moz-filter: blur(3px);
+    -o-filter: blur(3px);
+    transform: scale(1.03);
+}
+
+.blur-2x{
+    filter: blur(6px);
+    -webkit-filter: blur(6px);
+    -moz-filter: blur(6px);
+    -o-filter: blur(6px);
+    transform: scale(1.03);
+
+}
+
+.blur-3x{
+    filter: blur(9px);
+    -webkit-filter: blur(9px);
+    -moz-filter: blur(9px);
+    -o-filter: blur(9px);
+    transform: scale(1.03);
+}
+
+.overlay {
+    line-height: 1em;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    white-space: nowrap;
+}

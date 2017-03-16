@@ -1,7 +1,8 @@
-import json
+import json, html
 from flask import Flask, request, redirect, render_template, url_for
 from pathlib import Path
 from oauth_client import OAuthClient
+from photo import Photo
 
 app = Flask(__name__)
 oauth = OAuthClient()
@@ -13,8 +14,8 @@ def index():
     if Path("photolog.cfg").is_file():
         content = oauth.request()
         j = json.loads(content)
-
-        return render_template('index.html', photos=j['photos']['photo'])
+        photos = [Photo(e) for e in j['photos']['photo']]
+        return render_template('index.html', photos=photos)
     else:
         # Redirect to getting access token page.
         return redirect(url_for('install'))
@@ -41,4 +42,5 @@ def oauth_callback():
     return str(access_token)
 
 if __name__ == "__main__":
+    # app.run(host='0.0.0.0', port=5000, debug=True)
     app.run(host='0.0.0.0', port=80)

@@ -3,17 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <title>Photolog</title>
-    <style type="text/css">
-        html, body{
-            margin: 0 !important;
-            padding: 0 !important;
-        }
-    </style>
+    <!--<link rel="stylesheet" href="https://necolas.github.io/normalize.css/5.0.0/normalize.css">-->
+    <link rel="stylesheet" href="../static/styles/main.css">
     <style type="text/css" media="only screen and (-webkit-min-device-pixel-ratio: 2)"></style>
 </head>
 <body>
-{% for p in photos %}
-        <img src="https://farm{{p['farm']}}.staticflickr.com/{{p['server']}}/{{p['id']}}_{{p['originalsecret']}}_o.jpg" width="100%"><br>
-{% endfor %}
+
+    {% for p in photos %}
+    <div class="container">
+        <div class="photo blur-1x">
+            <img src="{{p.original_url}}">
+        </div>
+        {% if p.overlay != None %}
+        <div class="overlay" style="color: {{p.description['color']}}; font-size: {{p.description['size']}}px; left: {{p.description['left']}}; top: {{p.description['top']}};">
+            {{p.description['overlay']}}
+        </div>
+        {% endif %}
+    </div>
+
+    {% if p.content != None %}
+    <div class="content">
+        <p>
+            {{p.content}}
+        </p>
+    </div>
+    {% endif %}
+    {% endfor %}
 </body>
 </html>
