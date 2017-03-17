@@ -21,9 +21,12 @@ html, body{
 
 .content {
     clear:both;
-    padding: 100px 70px 400px 70px;
+    padding: 100px 70px 200px 70px;
 }
 
+.content p {
+    font-family: AppleGothic;
+}
 
 .blur-1x{
     filter: blur(3px);

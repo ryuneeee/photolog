@@ -30,4 +30,15 @@ class Photo:
     @property
     def content(self):
         if self.description:
+            if self.description.get('content') is None: return None
             return Markup(self.description.get('content'))
+
+    @property
+    def blur(self):
+        if self.description:
+            return self.description.get('blur')
+
+    @property
+    def font(self):
+        if self.description:
+            return self.description.get('font')

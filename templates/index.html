@@ -11,21 +11,19 @@
 
     {% for p in photos %}
     <div class="container">
-        <div class="photo blur-1x">
+        <div class="photo {% if p.blur != None %} blur-{{p.blur}} {% endif %}">
             <img src="{{p.original_url}}">
         </div>
         {% if p.overlay != None %}
-        <div class="overlay" style="color: {{p.description['color']}}; font-size: {{p.description['size']}}px; left: {{p.description['left']}}; top: {{p.description['top']}};">
+        <div class="overlay" style="{% if p.font != None %} font-family: {{p.font}}; {% endif %}color: {{p.description['color']}}; font-size: {{p.description['size']}}px; left: {{p.description['left']}}; top: {{p.description['top']}};">
             {{p.description['overlay']}}
         </div>
         {% endif %}
     </div>
 
     {% if p.content != None %}
-    <div class="content">
-        <p>
-            {{p.content}}
-        </p>
+    <div class="content" style="font-family: AppleGothic;">
+        {{p.content}}
     </div>
     {% endif %}
     {% endfor %}
